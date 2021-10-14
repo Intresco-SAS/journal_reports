@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="journal_sale_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <table class="table table-sm">
+                        <tr>
+                            <th><span style="color:red; width: 40%;">Name</span></th>
+                            <th><span style="color:red; width: 20%;">Payment Date</span></th>
+                            <th><span style="color:red; width: 20%;">Payment Amount</span></th>
+                            <th><span style="color:red; width: 20%;">Communication</span></th>
+                        </tr>
+                        <tr t-foreach="docs.get_journal()" t-as="ids">
+                            <t t-set="income" t-value="0"/>
+                            <t t-set="expenses" t-value="0"/>
+                            <t t-set="j_name" t-value="False"/>
+                            <table style="width: 100%;" t-foreach="docs" t-as="o">
+                                <t t-if="ids == o.journal_id.id">
+<!--                                    <table style="width: 100%;" t-foreach="docs" t-as="o">-->
+                                    <t t-if="o.payment_type == 'outbound'">
+                                        <tr>
+                                            <td style="width: 40%;"><span t-field="o.name"/></td>
+                                            <td style="width: 20%;"><span t-field="o.date"/></td>
+                                            <td style="width: 20%;"><span t-field="o.amount"/></td>
+                                            <td style="width: 20%;"><span t-field="o.ref"/></td>
+                                        </tr>
+                                        <t t-set="income" t-value="income + o.amount"/>
+                                    </t>
+                                    <t t-if="o.payment_type == 'inbound'">
+                                        <tr>
+                                            <td style="width: 40%;"><span t-field="o.name"/></td>
+                                            <td style="width: 20%;"><span t-field="o.date"/></td>
+                                            <td style="width: 20%;"><span t-field="o.amount"/></td>
+                                            <td style="width: 20%;"><span t-field="o.ref"/></td>
+                                        </tr>
+                                        <t t-set="expenses" t-value="expenses + o.amount"/>
+                                    </t>
+                                    <t t-set="j_name" t-value="o.journal_id.name"/>
+                                </t>
+                            </table>
+                            <table style="width: 100%;">
+                                <table style="width: 60%;" align="left">
+                                    <tr>
+                                        <td><strong>Income</strong></td>
+                                        <td><span align="right" t-esc="income"/></td><br/>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Expenses</strong></td>
+                                        <td><span align="right" t-esc="expenses"/></td><br/>
+                                    </tr>
+                                </table>
+                                <table style="width: 35%;" align="right">
+                                    <tr><td><centre><strong>Journal</strong></centre></td></tr>
+                                    <tr><td><centre><span t-esc="j_name"/></centre></td></tr>
+                                </table>
+                            </table>
+                            <pre>
+
+                            </pre>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
+
