@@ -6,57 +6,56 @@
                 <div class="page">
                     <table class="table table-sm">
                         <tr>
-                            <th><span style="color:red; width: 40%;">Name</span></th>
-                            <th><span style="color:red; width: 20%;">Payment Date</span></th>
-                            <th><span style="color:red; width: 20%;">Payment Amount</span></th>
-                            <th><span style="color:red; width: 20%;">Communication</span></th>
+                            <th style="color:red; width: 40%;"><span>Name</span></th>
+                            <th style="color:red; width: 20%;"><span>Payment Date</span></th>
+                            <th style="color:red; width: 20%;"><span>Payment Amount</span></th>
+                            <th style="color:red; width: 20%;"><span>Communication</span></th>
                         </tr>
                         <tr t-foreach="docs.get_journal()" t-as="ids">
+                            <t t-set="opening" t-value="0"/>
                             <t t-set="income" t-value="0"/>
                             <t t-set="expenses" t-value="0"/>
-                            <t t-set="j_name" t-value="False"/>
-                            <table style="width: 100%;" t-foreach="docs" t-as="o">
-                                <t t-if="ids == o.journal_id.id">
-<!--                                    <table style="width: 100%;" t-foreach="docs" t-as="o">-->
-                                    <t t-if="o.payment_type == 'outbound'">
-                                        <tr>
-                                            <td style="width: 40%;"><span t-field="o.name"/></td>
-                                            <td style="width: 20%;"><span t-field="o.date"/></td>
-                                            <td style="width: 20%;"><span t-field="o.amount"/></td>
-                                            <td style="width: 20%;"><span t-field="o.ref"/></td>
-                                        </tr>
-                                        <t t-set="income" t-value="income + o.amount"/>
-                                    </t>
-                                    <t t-if="o.payment_type == 'inbound'">
-                                        <tr>
-                                            <td style="width: 40%;"><span t-field="o.name"/></td>
-                                            <td style="width: 20%;"><span t-field="o.date"/></td>
-                                            <td style="width: 20%;"><span t-field="o.amount"/></td>
-                                            <td style="width: 20%;"><span t-field="o.ref"/></td>
-                                        </tr>
-                                        <t t-set="expenses" t-value="expenses + o.amount"/>
-                                    </t>
-                                    <t t-set="j_name" t-value="o.journal_id.name"/>
+                            <table  style="width: 100%;" t-foreach="docs.get_records(ids)" t-as="line">
+                                <t t-if="line['type'] == 'inbound'">
+                                    <t t-set="income" t-value="income + line['amount']"/>
                                 </t>
+                                <t t-else="" >
+                                     <t t-set="expenses" t-value="expenses + line['amount']"/>
+                                </t>
+                                <tr>
+                                    <td style="width: 40%;"><span t-esc="line['name']"/></td>
+                                    <td style="width: 20%;"><span t-esc="line['date']"/></td>
+                                    <td style="width: 20%;"><span t-esc="line['amount']"/></td>
+                                    <td style="width: 20%;"><span t-esc="line['ref']"/></td>
+                                    <t t-set="opening" t-value="opening + line['destination_account_id']"/>
+                                </tr>
                             </table>
+                            <t t-set="closing" t-value="opening - expenses"/>
                             <table style="width: 100%;">
                                 <table style="width: 60%;" align="left">
+                                    <tr>
+                                        <td style="color:red;"><strong>Opening Balance</strong></td>
+                                        <td><span align="right" t-esc="opening"/></td>
+                                    </tr>
                                     <tr>
                                         <td><strong>Income</strong></td>
                                         <td><span align="right" t-esc="income"/></td><br/>
                                     </tr>
                                     <tr>
                                         <td><strong>Expenses</strong></td>
-                                        <td><span align="right" t-esc="expenses"/></td><br/>
+                                        <td><t align="right" t-esc="expenses"/></td><br/>
+                                    </tr>
+                                    <tr>
+                                        <td style="color:red;"><strong>Closing Balance</strong></td>
+                                        <td><t align="right" t-esc='closing'/></td>
                                     </tr>
                                 </table>
                                 <table style="width: 35%;" align="right">
                                     <tr><td><centre><strong>Journal</strong></centre></td></tr>
-                                    <tr><td><centre><span t-esc="j_name"/></centre></td></tr>
+                                    <tr><td><centre><span t-esc="docs.get_journal_name(ids)"/></centre></td></tr>
                                 </table>
                             </table>
                             <pre>
-
                             </pre>
                         </tr>
                     </table>

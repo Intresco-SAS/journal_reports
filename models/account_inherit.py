@@ -13,15 +13,49 @@ class AccountPayment(models.Model):
         lst = list(set(lst))
         return lst
 
-    # def get_payment_type(self):
-    #     lst = []
-    #     lst1 = []
-    #     for ids in self:
-    #         if ids.payment_type == 'outbound':
-    #             lst.append(ids.id)
-    #         else:
-    #             lst1.append(ids.id)
-    #     lst = list(set(lst))
-    #     lst1 = list(set(lst))
-    #     return lst, lst1
+    def get_records(self, journal_id):
+        data_list = []
+        # income = 0
+        # expenses = 0
+        for rec in self:
+            if rec.journal_id.id == journal_id:
+                if rec.payment_type == 'outbound':
+                    # expenses += rec.amount
+                    vals = {
+                        'name': rec.name,
+                        'date': rec.date,
+                        'type': 'outbound',
+                        'amount': rec.amount,
+                        'ref': rec.ref,
+                        'destination_account_id': self.get_total(rec.destination_account_id.id),
+                    }
+                    data_list.append(vals)
+
+        for rec in self:
+            if rec.journal_id.id == journal_id:
+                if rec.payment_type == 'inbound':
+                    # income += rec.amount
+                    vals = {
+                        'name': rec.name,
+                        'date': rec.date,
+                        'type': 'inbound',
+                        'amount': rec.amount,
+                        'ref': rec.ref,
+                        'destination_account_id': self.get_total(rec.destination_account_id.id),
+                    }
+                    data_list.append(vals)
+
+        return data_list
+
+    def get_total(self, vals):
+        total = 0
+        data = self.env['account.move.line'].search([('account_id', '=', vals)])
+        for rec in data:
+            total += rec.balance
+        return total
+
+    def get_journal_name(self, val):
+        return self.env['account.journal'].search([('id', '=', val)]).name
+
+
 
