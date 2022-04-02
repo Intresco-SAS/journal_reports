@@ -23,10 +23,10 @@ class AccountPayment(models.Model):
                     # expenses += rec.amount
                     vals = {
                         'name': rec.name,
-                        'date': rec.date,
+                        'date': rec.payment_date,
                         'type': 'outbound',
                         'amount': rec.amount,
-                        'ref': rec.ref,
+                        'ref': rec.communication,
                         'destination_account_id': self.get_total(rec.destination_account_id.id),
                     }
                     data_list.append(vals)
@@ -37,10 +37,10 @@ class AccountPayment(models.Model):
                     # income += rec.amount
                     vals = {
                         'name': rec.name,
-                        'date': rec.date,
+                        'date': rec.payment_date,
                         'type': 'inbound',
                         'amount': rec.amount,
-                        'ref': rec.ref,
+                        'ref': rec.communication,
                         'destination_account_id': self.get_total(rec.destination_account_id.id),
                     }
                     data_list.append(vals)
