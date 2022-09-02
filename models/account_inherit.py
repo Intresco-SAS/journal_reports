@@ -28,7 +28,7 @@ class AccountPayment(models.Model):
                         'type': 'outbound',
                         'amount': rec.amount,
                         'ref': rec.communication,
-                        'destination_account_id': self.get_total(rec.destination_account_id.id),
+                        #'destination_account_id': self.get_total(rec.destination_account_id.id),
                     }
                     data_list.append(vals)
 
@@ -42,7 +42,7 @@ class AccountPayment(models.Model):
                         'type': 'inbound',
                         'amount': rec.amount,
                         'ref': rec.communication,
-                        'destination_account_id': self.get_total(rec.destination_account_id.id),
+                        #'destination_account_id': self.get_total(rec.destination_account_id.id),
                     }
                     data_list.append(vals)
 
@@ -50,9 +50,12 @@ class AccountPayment(models.Model):
 
     def get_total(self, vals):
         total = 0
+        numero = 0
         data = self.env['account.move.line'].search([('account_id', '=', vals)])
         for rec in data:
+            numero += 1
             total += rec.balance
+        
         return total
 
     def get_journal_name(self, val):
