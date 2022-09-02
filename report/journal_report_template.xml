@@ -6,10 +6,10 @@
                 <div class="page">
                     <table class="table table-sm">
                         <tr>
-                            <th style="color:red; width: 40%;"><span>Name</span></th>
-                            <th style="color:red; width: 20%;"><span>Payment Date</span></th>
-                            <th style="color:red; width: 20%;"><span>Payment Amount</span></th>
-                            <th style="color:red; width: 20%;"><span>Communication</span></th>
+                            <th style="color:red; width: 40%;"><span>Referencia</span></th>
+                            <th style="color:red; width: 20%;"><span>Fecha Pago</span></th>
+                            <th style="color:red; width: 20%;"><span>Monto</span></th>
+                            <th style="color:red; width: 20%;"><span>Documento de Origen</span></th>
                         </tr>
                         <tr t-foreach="docs.get_journal()" t-as="ids">
                             <t t-set="opening" t-value="0"/>
@@ -35,11 +35,11 @@
                                 <table style="width: 60%;" align="left">
                                     
                                     <tr>
-                                        <td><strong>Income</strong></td>
+                                        <td><strong>Ingresos</strong></td>
                                         <td><span align="right" t-esc="income"/></td><br/>
                                     </tr>
                                     <tr>
-                                        <td><strong>Expenses</strong></td>
+                                        <td><strong>Gastos</strong></td>
                                         <td><t align="right" t-esc="expenses"/></td><br/>
                                     </tr>
                                     <tr>
@@ -48,7 +48,7 @@
                                     </tr>
                                 </table>
                                 <table style="width: 35%;" align="right">
-                                    <tr><td><centre><strong>Journal</strong></centre></td></tr>
+                                    <tr><td><centre><strong>Diario</strong></centre></td></tr>
                                     <tr><td><centre><span t-esc="docs.get_journal_name(ids)"/></centre></td></tr>
                                 </table>
                             </table>
