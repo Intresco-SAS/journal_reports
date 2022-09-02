@@ -11,6 +11,7 @@ class AccountPayment(models.Model):
             if ids.journal_id:
                 lst.append(ids.journal_id.id)
         lst = list(set(lst))
+        print(lst)
         return lst
 
     def get_records(self, journal_id):
@@ -23,7 +24,7 @@ class AccountPayment(models.Model):
                     # expenses += rec.amount
                     vals = {
                         'name': rec.name,
-                        'date': rec.payment_date,
+                        'payment_date': rec.payment_date,
                         'type': 'outbound',
                         'amount': rec.amount,
                         'ref': rec.communication,
@@ -37,7 +38,7 @@ class AccountPayment(models.Model):
                     # income += rec.amount
                     vals = {
                         'name': rec.name,
-                        'date': rec.payment_date,
+                        'payment_date': rec.payment_date,
                         'type': 'inbound',
                         'amount': rec.amount,
                         'ref': rec.communication,

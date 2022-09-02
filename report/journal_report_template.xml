@@ -24,7 +24,7 @@
                                 </t>
                                 <tr>
                                     <td style="width: 40%;"><span t-esc="line['name']"/></td>
-                                    <td style="width: 20%;"><span t-esc="line['date']"/></td>
+                                    <td style="width: 20%;"><span t-esc="line['payment_date']"/></td>
                                     <td style="width: 20%;"><span t-esc="line['amount']"/></td>
                                     <td style="width: 20%;"><span t-esc="line['ref']"/></td>
                                     <t t-set="opening" t-value="opening + line['destination_account_id']"/>
@@ -33,10 +33,7 @@
                             <t t-set="closing" t-value="opening - expenses"/>
                             <table style="width: 100%;">
                                 <table style="width: 60%;" align="left">
-                                    <tr>
-                                        <td style="color:red;"><strong>Opening Balance</strong></td>
-                                        <td><span align="right" t-esc="opening"/></td>
-                                    </tr>
+                                    
                                     <tr>
                                         <td><strong>Income</strong></td>
                                         <td><span align="right" t-esc="income"/></td><br/>
@@ -46,8 +43,8 @@
                                         <td><t align="right" t-esc="expenses"/></td><br/>
                                     </tr>
                                     <tr>
-                                        <td style="color:red;"><strong>Closing Balance</strong></td>
-                                        <td><t align="right" t-esc='closing'/></td>
+                                        <td style="color:red;"><strong>Balance total</strong></td>
+                                        <td><t align="right" t-esc='income - expenses'/></td>
                                     </tr>
                                 </table>
                                 <table style="width: 35%;" align="right">
